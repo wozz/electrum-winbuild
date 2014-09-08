@@ -1,15 +1,15 @@
 FROM ubuntu:14.04
 MAINTAINER maran.hidskes@gmail.com
 
+RUN dpkg --add-architecture i386
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y software-properties-common && add-apt-repository -y ppa:ubuntu-wine/ppa
-RUN dpkg --add-architecture i386
 RUN apt-get update -y
 RUN apt-get install -y wine1.7 xvfb wget
 RUN apt-get install -y winbind
 
-RUN apt-get purge -y python-software-properties
+RUN apt-get purge -y software-properties-common
 RUN apt-get autoclean -y
 
 # Versions
