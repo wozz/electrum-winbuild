@@ -2,15 +2,15 @@ FROM ubuntu:14.04
 MAINTAINER maran.hidskes@gmail.com
 
 RUN dpkg --add-architecture i386
-RUN apt-get update -y
-RUN apt-get upgrade -y
-RUN apt-get install -y software-properties-common && add-apt-repository -y ppa:ubuntu-wine/ppa
-RUN apt-get update -y
-RUN apt-get install -y wine1.7 xvfb wget
-RUN apt-get install -y winbind
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common && add-apt-repository -y ppa:ubuntu-wine/ppa
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wine1.7 xvfb wget
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y winbind
 
-RUN apt-get purge -y software-properties-common
-RUN apt-get autoclean -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get purge -y software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive apt-get autoclean -y
 
 # Versions
 ENV PYTHON_URL https://www.python.org/ftp/python/2.7.8/python-2.7.8.msi
