@@ -51,7 +51,7 @@ RUN cp -r SCRIPTS/* $WINEPREFIX/drive_c/Python27/Scripts/
 RUN $PYTHON $PYHOME/Scripts/pywin32_postinstall.py -install
 
 RUN wget -O PyQt.exe "$PYQT4_URL"
-RUN xvfb-run -a wine PyQt.exe /S
+#RUN xvfb-run -a wine PyQt.exe /S
 
 VOLUME ["/opt/wine-electrum/drive_c/electrum"]
 

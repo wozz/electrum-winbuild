@@ -15,6 +15,7 @@ function buildBinary(){
 function buildImage(){
   echo "Building image"
   $DOCKERBIN build -t electrum-winbuild .
+  $DOCKERBIN run --privileged electrum-winbuild bash -c 'xvfb-run -a wine PyQt.exe /S'
 }
 
 function prepareFile(){
