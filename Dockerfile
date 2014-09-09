@@ -23,7 +23,7 @@ ENV NSIS_URL http://prdownloads.sourceforge.net/nsis/nsis-2.46-setup.exe?downloa
 ENV WINEPREFIX /opt/wine-electrum
 RUN export WINEPREFIX=/opt/wine-electrum
 
-ENV ELECTRUM_PATH $WINE_PREFIX/drive_c/electrum
+ENV ELECTRUM_PATH $WINEPREFIX/drive_c/electrum
 ENV PYHOME c:/Python27
 ENV PYTHON wine $PYHOME/python.exe -OO -B
 ENV PIP $PYTHON -m pip
