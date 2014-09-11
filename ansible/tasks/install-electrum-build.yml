@@ -24,17 +24,18 @@
   args:
     chdir: /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/
 
-- name: pause
-  pause: seconds=10
-
-- name: Copy Result
-  shell: "cp /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/dist/electrum.exe /home/ubuntu/Electrum-1.9.8.exe"
-
 - name: Copy NSI File
   shell: "cp /home/ubuntu/.wine/drive_c/electrum/electrum.nsi /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/"
 
 - name: Create NSIS Install
-  shell: "xvfb-run wine c:\\\\Program\\ Files\\(x86\\)\\\\NSIS\\\\makensis.exe -V1 electrum.nsi"
+  shell: "xvfb-run wine c:\\\\Program\\ Files\\ \\(x86\\)\\\\NSIS\\\\makensis.exe -V1 electrum.nsi"
   environment: en
   args:
     chdir: /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/
+
+- name: Copy Result
+  shell: "{{ item }}"
+  with_items:
+  - "cp /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/dist/electrum.exe /home/ubuntu/Electrum-1.9.8.exe"
+  - "cp /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/dist/electrum-setup.exe /home/ubuntu/Electrum-Setup-1.9.8.exe"
+
