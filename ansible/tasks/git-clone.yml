@@ -1,0 +1,4 @@
+---
+- name: git clone electrum-winbuild
+  git: repo=https://github.com/maran/electrum-winbuild.git dest=/mnt/workspace/electrum-winbuild
+

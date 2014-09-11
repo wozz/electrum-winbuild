@@ -1,0 +1,40 @@
+---
+- name: Make dir
+  file: path={{ item }} state=directory
+  with_items:
+  - "/home/ubuntu/.wine/drive_c/electrum/source/"
+
+- name: Download Items
+  get_url: url={{ item.url }} dest={{ item.dest }}
+  with_items:
+  - { url: "https://download.electrum.org/Electrum-1.9.8.tar.gz", dest: "/home/ubuntu/.wine/drive_c/electrum/source/" }
+  - { url: "https://raw.githubusercontent.com/spesmilo/electrum/master/contrib/build-wine/deterministic.spec", dest: "/home/ubuntu/.wine/drive_c/electrum/" }
+  - { url: "https://raw.githubusercontent.com/spesmilo/electrum/master/contrib/build-wine/electrum.nsi", dest: "/home/ubuntu/.wine/drive_c/electrum/" }
+
+- name: Unpack Electrum
+  action: unarchive
+  args:
+    src: /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8.tar.gz
+    dest: /home/ubuntu/.wine/drive_c/electrum/source/
+    copy: no
+
+- name: Build Electrum
+  shell: "$PYTHON 'c:/PyInstaller/pyinstaller.py' -y 'c:/electrum/deterministic.spec'"
+  environment: en
+  args:
+    chdir: /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/
+
+- name: pause
+  pause: seconds=10
+
+- name: Copy Result
+  shell: "cp /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/dist/electrum.exe /home/ubuntu/Electrum-1.9.8.exe"
+
+- name: Copy NSI File
+  shell: "cp /home/ubuntu/.wine/drive_c/electrum/electrum.nsi /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/"
+
+- name: Create NSIS Install
+  shell: "xvfb-run wine c:\\\\Program\\ Files\\(x86\\)\\\\NSIS\\\\makensis.exe -V1 electrum.nsi"
+  environment: en
+  args:
+    chdir: /home/ubuntu/.wine/drive_c/electrum/source/Electrum-1.9.8/

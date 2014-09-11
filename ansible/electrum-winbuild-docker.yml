@@ -1,0 +1,42 @@
+---
+- name: Deploy build server
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Deploy Build Instance
+      local_action:
+        module: ec2
+        region: us-east-1
+        spot_price: 0.09
+        spot_wait_timeout: 600
+        keypair: ansible
+        group: ansible
+        instance_type: c3.xlarge
+        image: ami-e84d8480 # ubuntu 14.04
+        wait: yes
+        instance_tags:
+          ansible: build
+          Name: ansible-build
+          billing: testing
+      register: ec2
+
+    - name: Add instance to group
+      local_action: add_host hostname={{ item.public_ip }} groupname=ansible-build
+      with_items: ec2.instances
+
+    - name: Wait for SSH
+      pause: minutes=1
+
+    - name: Get rid of SSH "Are you sure you want to continue connecting (yes/no)?" query
+      local_action: command sh -c 'ssh-keyscan -t rsa {{ item.public_ip }} >>$HOME/.ssh/known_hosts'
+      with_items: ec2.instances
+
+- name: Configure build server
+  hosts: ansible-build
+  user: ubuntu
+  sudo: True
+  tasks:
+    - include: tasks/update.yml
+    - { include: tasks/mkdir.yml, dir: "/mnt/workspace/" }
+    - include: tasks/install-docker.yml
+    - include: tasks/git-clone.yml

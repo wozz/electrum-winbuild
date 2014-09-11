@@ -1,0 +1,4 @@
+---
+- name: Make directory
+  action: file path={{ dir }} state=directory
+

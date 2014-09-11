@@ -1,0 +1,19 @@
+---
+- name: Add i386 Architecture
+  command: dpkg --add-architecture i386
+
+- name: Add Wine Repository
+  apt_repository: repo='ppa:ubuntu-wine/ppa'
+
+- name: Install Dependencies
+  apt: pkg={{ item }} state=latest update_cache=yes
+  with_items:
+  - software-properties-common
+  - wine1.7
+  - xvfb
+  - winbind
+  - xfonts-100dpi
+  - xfonts-75dpi
+  - xfonts-scalable
+  - xfonts-cyrillic
+
